@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "outDir": "build",
+        "noEmit": false, //for not generating the js output in the build folder
+        "allowJs": true, //for type checking js
+        "checkJs": true
+
+    },
+    "include": ["src/**/*"]
+}

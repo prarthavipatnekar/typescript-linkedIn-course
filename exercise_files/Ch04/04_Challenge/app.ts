@@ -1,6 +1,10 @@
+type Query<T> = {
+    [prop in keyof T]?: (val: T[prop]) => boolean;
+}
+
 function query<T>(
     items: T[],
-    query: any // <--- replace this!
+    query: Query<T> // <--- replace this!
 ) {
     return items.filter(item => {
         // iterate through each of the item's properties

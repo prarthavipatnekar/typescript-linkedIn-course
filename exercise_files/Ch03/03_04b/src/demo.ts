@@ -1,5 +1,6 @@
 type ContactStatus = "active" | "inactive" | "new";
 
+//index access type
 interface Address {
     street: string;
     province: string;
@@ -13,16 +14,18 @@ interface Contact {
     address: Address;
 }
 
+type AweSome = Contact["address"]["postalCode"]; //drill down on the embedded properties
+
 interface ContactEvent {
-    contactId: number;
+    contactId: Contact["id"]; 
 }
 
 interface ContactDeletedEvent extends ContactEvent { 
 }
 
 interface ContactStatusChangedEvent extends ContactEvent { 
-    oldStatus: ContactStatus;
-    newStatus: ContactStatus;
+    oldStatus: Contact["status"];
+    newStatus: Contact["status"];
 }
 
 interface ContactEvents {
@@ -34,3 +37,14 @@ interface ContactEvents {
 function getValue<T, U extends keyof T>(source: T, propertyName: U) {
     return source[propertyName];
 }
+
+function handleEvent<T extends keyof ContactEvents>(
+    eventName: T,
+    handler: (evt: ContactEvents[T]) => void
+) {
+    if (eventName == "statusChanged") {
+        handler({contactId: 1, oldStatus: "active", newStatus: "inactive"})
+    }
+}
+
+handleEvent("statusChanged", evt => evt);
